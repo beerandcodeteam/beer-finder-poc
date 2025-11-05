@@ -42,7 +42,7 @@
                     placeholder="Valor desejado"
                     wire:model.live="filters.prop_filter_value"
                     :disabled="empty($filters['prop_filter_rule'])"
-                    :type="isset($filters['prop_filter']) && $filters['prop_filter'] == 'first_brewed_date' ? 'date' : 'numeric'"
+                    :type="isset($filters['prop_filter']) && $filters['prop_filter'] == 'first_brewed_date' ? 'date' : 'number'"
                 />
             </flux:field>
             <flux:field class="col-span-1">
@@ -130,6 +130,10 @@
                 </x-table.rows>
 
             </x-table>
+
+            <div class="mt-6">
+                {{ $beers->links() }}
+            </div>
         </x-section>
     </flux:main>
 

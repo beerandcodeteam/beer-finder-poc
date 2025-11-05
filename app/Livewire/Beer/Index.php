@@ -5,12 +5,13 @@ namespace App\Livewire\Beer;
 use App\Models\Beer;
 use App\Services\BeerService;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Masmerise\Toaster\Toaster;
 
 class Index extends Component
 {
 
-    public $beers = [];
+    use WithPagination;
     public string $sortBy = '';
     public string $sortDirection = '';
     public array $filters = [];
@@ -22,31 +23,28 @@ class Index extends Component
         $this->beerService = $beerService;
     }
 
-    public function mount()
-    {
-        $this->beers = $this->beerService->getBeers([], $this->sortBy, $this->sortDirection);
-    }
-
     public function sort($sortBy)
     {
         $this->sortBy = $sortBy;
         $this->sortDirection = !empty($this->sortDirection) && $this->sortDirection === 'asc' ? 'desc' : 'asc';
-        $this->beers = $this->beerService->getBeers($this->filters, $this->sortBy, $this->sortDirection);
+        $this->resetPage();
     }
 
     public function filter()
     {
+
+        $this->validate([
+            'filters.name' => 'nullable|string|min:3|max:255',
+            'filters.prop_filter' => 'nullable',
+            'filters.prop_filter_rule' => 'required_with:filters.prop_filter',
+            'filters.prop_filter_value' => 'required_with:filters.prop_filter_rule'
+        ]);
+
         try {
-            $this->validate([
-                'filters.name' => 'nullable|string|min:3|max:255',
-                'filters.prop_filter' => 'nullable',
-                'filters.prop_filter_rule' => 'required_with:filters.prop_filter',
-                'filters.prop_filter_value' => 'required_with:filters.prop_filter_rule'
-            ]);
-            $this->beers = $this->beerService->getBeers($this->filters, $this->sortBy, $this->sortDirection);
+            $this->resetPage();
         } catch (\Exception $e)
         {
-            Toaster::error("Erro ao aplicar o filtro");
+            Toaster::error("Erro ao aplicar o filtro {$e->getMessage()}");
         }
     }
 
@@ -54,12 +52,13 @@ class Index extends Component
     {
         $beer->delete();
         Toaster::info("{$beer->name} removida com sucesso!");
-        $this->filter();
     }
 
 
     public function render()
     {
-        return view('livewire.beer.index');
+        return view('livewire.beer.index', [
+            'beers' => $this->beerService->getBeers($this->filters, $this->sortBy, $this->sortDirection),
+        ]);
     }
 }

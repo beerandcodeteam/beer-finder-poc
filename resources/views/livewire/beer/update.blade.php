@@ -145,6 +145,13 @@
                     </flux:button>
                 </div>
             </form>
+
+            <flux:separator />
+
+            <livewire:components.image-uploader :model="$beer ?? null" />
         </x-section>
+
+
+
     </flux:main>
 </div>
