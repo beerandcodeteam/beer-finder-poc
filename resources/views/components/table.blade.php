@@ -1,3 +1,5 @@
-<div class="bg-white dark:bg-white/10 border border-zinc-200 dark:border-white/10 p-6 rounded-xl space-y-6">
-    {{ $slot }}
+<div class="flex flex-col w-full overflow-x-auto">
+    <table class="min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap whitespace-normal whitespace-normal" data-flux-table="">
+        {{ $slot }}
+    </table>
 </div>

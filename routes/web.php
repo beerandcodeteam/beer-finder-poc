@@ -7,15 +7,14 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::view('/', 'dashboard')
+        ->name('dashboard');
+
     Route::redirect('settings', 'settings/profile');
 
     Route::get('settings/profile', Profile::class)->name('profile.edit');
@@ -32,4 +31,8 @@ Route::middleware(['auth'])->group(function () {
             ),
         )
         ->name('two-factor.show');
+
+    Route::get('beers', \App\Livewire\Beer\Index::class)->name('beers.index');
+    Route::get('beers/create', \App\Livewire\Beer\Create::class)->name('beers.create');
+    Route::get('beers/{beer}', \App\Livewire\Beer\Update::class)->name('beers.update');
 });
