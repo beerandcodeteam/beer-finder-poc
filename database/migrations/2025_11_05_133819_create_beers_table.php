@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('tagline');
             $table->text('description');
             $table->date('first_brewed_date');
-            $table->decimal('abv', 4,1)->comment('Alcohol By Volume (Teor alcoolico)');
+            $table->decimal('abv', 4, 1)->comment('Alcohol By Volume (Teor alcoolico)');
             $table->integer('ibu')->comment('International Bitterness Unit (Indice de armargor)');
             $table->integer('ebc')->comment('Escala de cor 0 = clara / 80 = escura');
-            $table->decimal('ph', 3,1)->comment('Indice de Acidez');
+            $table->decimal('ph', 3, 1)->comment('Indice de Acidez');
             $table->integer('volume')->comment('Volume in ml');
             $table->text('ingredients');
             $table->text('brewer_tips');

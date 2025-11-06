@@ -10,10 +10,12 @@ use Masmerise\Toaster\Toaster;
 
 class Index extends Component
 {
-
     use WithPagination;
+
     public string $sortBy = '';
+
     public string $sortDirection = '';
+
     public array $filters = [];
 
     protected BeerService $beerService;
@@ -26,7 +28,7 @@ class Index extends Component
     public function sort($sortBy)
     {
         $this->sortBy = $sortBy;
-        $this->sortDirection = !empty($this->sortDirection) && $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        $this->sortDirection = ! empty($this->sortDirection) && $this->sortDirection === 'asc' ? 'desc' : 'asc';
         $this->resetPage();
     }
 
@@ -37,13 +39,12 @@ class Index extends Component
             'filters.name' => 'nullable|string|min:3|max:255',
             'filters.prop_filter' => 'nullable',
             'filters.prop_filter_rule' => 'required_with:filters.prop_filter',
-            'filters.prop_filter_value' => 'required_with:filters.prop_filter_rule'
+            'filters.prop_filter_value' => 'required_with:filters.prop_filter_rule',
         ]);
 
         try {
             $this->resetPage();
-        } catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             Toaster::error("Erro ao aplicar o filtro {$e->getMessage()}");
         }
     }
@@ -53,7 +54,6 @@ class Index extends Component
         $beer->delete();
         Toaster::info("{$beer->name} removida com sucesso!");
     }
-
 
     public function render()
     {

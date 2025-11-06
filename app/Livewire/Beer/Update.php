@@ -5,14 +5,13 @@ namespace App\Livewire\Beer;
 use App\Livewire\Forms\BeerForm;
 use App\Models\Beer;
 use App\Services\BeerService;
-use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
 
 class Update extends Component
 {
-
     public BeerForm $form;
+
     public Beer $beer;
 
     protected BeerService $beerService;
@@ -33,6 +32,7 @@ class Update extends Component
         try {
 
             $this->form->update();
+
             return redirect(route('beers.index'))
                 ->success("{$this->form->name} Criada com sucesso!");
 
@@ -41,6 +41,7 @@ class Update extends Component
         }
 
     }
+
     public function render()
     {
         return view('livewire.beer.update');

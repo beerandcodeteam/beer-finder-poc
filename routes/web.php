@@ -7,9 +7,6 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-
-
-
 Route::middleware(['auth'])->group(function () {
 
     Route::view('/', 'dashboard')

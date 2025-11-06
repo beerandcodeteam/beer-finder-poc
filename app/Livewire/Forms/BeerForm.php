@@ -4,27 +4,34 @@ namespace App\Livewire\Forms;
 
 use App\Models\Beer;
 use App\Services\BeerService;
-use Illuminate\Http\RedirectResponse;
-use Livewire\Component;
 use Livewire\Form;
-use Masmerise\Toaster\Toaster;
 
 class BeerForm extends Form
 {
-
     public ?Beer $beer = null;
 
     public string $name = '';
+
     public string $tagline = '';
+
     public string $description = '';
+
     public string $first_brewed_date = '';
+
     public string $abv = '';
+
     public string $ibu = '';
+
     public string $ebc = '';
+
     public string $ph = '';
+
     public string $volume = '';
+
     public string $ingredients = '';
+
     public string $brewer_tips = '';
+
     protected BeerService $beerService;
 
     public function setBeer(Beer $beer): void

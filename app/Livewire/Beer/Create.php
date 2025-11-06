@@ -4,13 +4,11 @@ namespace App\Livewire\Beer;
 
 use App\Livewire\Forms\BeerForm;
 use App\Services\BeerService;
-use Illuminate\Http\RedirectResponse;
 use Livewire\Component;
 use Masmerise\Toaster\Toaster;
 
 class Create extends Component
 {
-
     public BeerForm $form;
 
     protected BeerService $beerService;
@@ -25,6 +23,7 @@ class Create extends Component
         try {
 
             $this->form->store();
+
             return redirect(route('beers.index'))
                 ->success("{$this->form->name} Criada com sucesso!");
 
@@ -33,6 +32,7 @@ class Create extends Component
         }
 
     }
+
     public function render()
     {
         return view('livewire.beer.create');

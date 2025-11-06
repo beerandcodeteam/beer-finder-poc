@@ -40,7 +40,7 @@ class Beer extends Model
             ->withTimestamps();
     }
 
-    public function image(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function images(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany(Image::class, 'imageable');
     }

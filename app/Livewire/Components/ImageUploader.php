@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Masmerise\Toaster\Toaster;
 
 class ImageUploader extends Component
 {
@@ -28,8 +29,9 @@ class ImageUploader extends Component
         $this->model = $model;
         $this->storagePath = $storagePath;
 
-        if ($this->model && method_exists($this->model, 'image')) {
-            $this->existingImages = $this->model->image()
+        if ($this->model && method_exists($this->model, 'images')) {
+            $this->existingImages = $this->model->images()
+                ->orderBy('is_cover', 'desc')
                 ->get()
                 ->map(fn (Image $image) => [
                     'id' => $image->id,
@@ -46,15 +48,15 @@ class ImageUploader extends Component
      */
     public function setCover(int $imageId): void
     {
-        if (! $this->model || ! method_exists($this->model, 'image')) {
+        if (! $this->model || ! method_exists($this->model, 'images')) {
             return;
         }
 
-        $this->model->image()->update(['is_cover' => false]);
-        $this->model->image()->where('id', $imageId)->update(['is_cover' => true]);
+        $this->model->images()->update(['is_cover' => false]);
+        $this->model->images()->where('id', $imageId)->update(['is_cover' => true]);
 
         $this->mount($this->model, $this->storagePath);
-        $this->dispatch('image-cover-updated');
+        Toaster::success('Capa atualizada com sucesso');
     }
 
     /**
@@ -62,11 +64,11 @@ class ImageUploader extends Component
      */
     public function removeExistingImage(int $imageId): void
     {
-        if (! $this->model || ! method_exists($this->model, 'image')) {
+        if (! $this->model || ! method_exists($this->model, 'images')) {
             return;
         }
 
-        $image = $this->model->image()->find($imageId);
+        $image = $this->model->images()->find($imageId);
 
         if ($image) {
             Storage::delete($image->path);
@@ -74,7 +76,7 @@ class ImageUploader extends Component
         }
 
         $this->mount($this->model, $this->storagePath);
-        $this->dispatch('image-deleted');
+        Toaster::success('Imagem removida com sucesso');
     }
 
     /**
@@ -91,7 +93,7 @@ class ImageUploader extends Component
      */
     public function saveImages(): void
     {
-        if (! $this->model || ! method_exists($this->model, 'image') || empty($this->images)) {
+        if (! $this->model || ! method_exists($this->model, 'images') || empty($this->images)) {
             return;
         }
 
@@ -99,12 +101,12 @@ class ImageUploader extends Component
             'images.*' => ['image', 'max:2048'],
         ]);
 
-        $hasNoCover = $this->model->image()->where('is_cover', true)->doesntExist();
+        $hasNoCover = $this->model->images()->where('is_cover', true)->doesntExist();
 
         foreach ($this->images as $index => $image) {
             $path = $image->store($this->storagePath, 'public');
 
-            $this->model->image()->create([
+            $this->model->images()->create([
                 'path' => $path,
                 'is_cover' => $hasNoCover && $index === 0,
             ]);
@@ -112,7 +114,7 @@ class ImageUploader extends Component
 
         $this->images = [];
         $this->mount($this->model, $this->storagePath);
-        $this->dispatch('images-saved');
+        Toaster::success('Imagens criada com sucesso');
     }
 
     /**
