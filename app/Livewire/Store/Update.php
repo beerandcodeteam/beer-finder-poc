@@ -19,6 +19,21 @@ class Update extends Component
         $this->form->setStore($store);
     }
 
+    public function addOpeningHour(): void
+    {
+        $this->form->opening_hours_json[] = [
+            'day' => '',
+            'start' => '',
+            'end' => '',
+        ];
+    }
+
+    public function removeOpeningHour(int $index): void
+    {
+        unset($this->form->opening_hours_json[$index]);
+        $this->form->opening_hours = array_values($this->form->opening_hours);
+    }
+
     public function save(): void
     {
         $this->form->update();

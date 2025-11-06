@@ -10,6 +10,21 @@ class Create extends Component
 {
     public StoreForm $form;
 
+    public function addOpeningHour(): void
+    {
+        $this->form->opening_hours_json[] = [
+            'day' => '',
+            'start' => '',
+            'end' => '',
+        ];
+    }
+
+    public function removeOpeningHour(int $index): void
+    {
+        unset($this->form->opening_hours_json[$index]);
+        $this->form->opening_hours_json = array_values($this->form->opening_hours);
+    }
+
     public function save(): void
     {
         $store = $this->form->store();

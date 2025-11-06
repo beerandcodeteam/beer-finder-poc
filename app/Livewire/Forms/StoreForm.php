@@ -18,7 +18,7 @@ class StoreForm extends Form
 
     public string $phone = '';
 
-    public string $opening_hours_json = '';
+    public array $opening_hours_json = [];
 
     /**
      * Set the store to edit.
@@ -30,9 +30,26 @@ class StoreForm extends Form
         $this->slug = $store->slug;
         $this->website = $store->website;
         $this->phone = $store->phone;
-        $this->opening_hours_json = is_array($store->opening_hours_json)
-            ? json_encode($store->opening_hours_json, JSON_PRETTY_PRINT)
-            : '';
+        $this->opening_hours_json = $store->opening_hours_json ?? [];
+    }
+
+    /**
+     * Convert opening hours array to JSON format for storage.
+     */
+    private function convertToJson(array $openingHours): array
+    {
+        $result = [];
+        foreach ($openingHours as $hour) {
+            if (! empty($hour['day']) && ! empty($hour['start']) && ! empty($hour['end'])) {
+                $result[] = [
+                    'day' => $hour['day'],
+                    'start' => $hour['start'],
+                    'end' => $hour['end'],
+                ];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -42,7 +59,7 @@ class StoreForm extends Form
     {
         $unique_rule = 'unique:stores,slug';
         if ($this->store) {
-            $unique_rule .= ',' . $this->store->id;
+            $unique_rule .= ','.$this->store->id;
         }
 
         return [
@@ -50,7 +67,9 @@ class StoreForm extends Form
             'slug' => ['required', 'string', 'max:255', $unique_rule],
             'website' => ['required', 'string', 'url', 'max:255'],
             'phone' => ['required', 'string', 'max:15'],
-            'opening_hours_json' => ['nullable', 'json'],
+            'opening_hours_json.*.day' => ['nullable', 'string'],
+            'opening_hours_json.*.start' => ['required_with:opening_hours_json.*.day', 'date_format:H:i'],
+            'opening_hours_json.*.end' => ['required_with:opening_hours_json.*.day', 'date_format:H:i'],
         ];
     }
 
@@ -69,8 +88,8 @@ class StoreForm extends Form
     {
         $validated = $this->validate();
         $validated['user_id'] = auth()->id();
-        $validated['opening_hours_json'] = $validated['opening_hours_json']
-            ? json_decode($validated['opening_hours_json'], true)
+        $validated['opening_hours_json'] = ! empty($this->opening_hours_json)
+            ? $this->convertToJson($this->opening_hours_json)
             : null;
 
         return Store::create($validated);
@@ -82,8 +101,8 @@ class StoreForm extends Form
     public function update(): void
     {
         $validated = $this->validate();
-        $validated['opening_hours_json'] = $validated['opening_hours_json']
-            ? json_decode($validated['opening_hours_json'], true)
+        $validated['opening_hours_json'] = ! empty($this->opening_hours_json)
+            ? $this->convertToJson($this->opening_hours_json)
             : null;
 
         $this->store->update($validated);

@@ -56,17 +56,64 @@
                     </flux:field>
                 </div>
 
-                <flux:field>
-                    <flux:textarea
-                        label="Horário de Funcionamento (JSON)"
-                        placeholder='{"monday": "09:00-18:00", "tuesday": "09:00-18:00"}'
-                        wire:model="form.opening_hours_json"
-                        rows="6"
-                    />
-                    <flux:text class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        Opcional. Formato JSON válido.
+                <div>
+                    <flux:label>Horário de Funcionamento</flux:label>
+                    <flux:text class="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                        Adicione os horários de funcionamento da loja. Opcional.
                     </flux:text>
-                </flux:field>
+
+                    @foreach($form->opening_hours_json as $index => $hour)
+                        <div class="grid lg:grid-cols-8 gap-4 mb-4" wire:key="hour-{{ $index }}">
+                            <flux:field class="col-span-3">
+                                <flux:select wire:model="form.opening_hours_json.{{ $index }}.day">
+                                    <flux:select.option value="">Selecione o dia</flux:select.option>
+                                    <flux:select.option value="monday">Segunda-feira</flux:select.option>
+                                    <flux:select.option value="tuesday">Terça-feira</flux:select.option>
+                                    <flux:select.option value="wednesday">Quarta-feira</flux:select.option>
+                                    <flux:select.option value="thursday">Quinta-feira</flux:select.option>
+                                    <flux:select.option value="friday">Sexta-feira</flux:select.option>
+                                    <flux:select.option value="saturday">Sábado</flux:select.option>
+                                    <flux:select.option value="sunday">Domingo</flux:select.option>
+                                </flux:select>
+                            </flux:field>
+
+                            <flux:field class="col-span-2">
+                                <flux:input
+                                    type="time"
+                                    wire:model="form.opening_hours_json.{{ $index }}.start"
+                                    placeholder="Início"
+                                />
+                            </flux:field>
+
+                            <flux:field class="col-span-2">
+                                <flux:input
+                                    type="time"
+                                    wire:model="form.opening_hours_json.{{ $index }}.end"
+                                    placeholder="Fim"
+                                />
+                            </flux:field>
+
+                            <div class="flex items-end">
+                                <flux:button
+                                    type="button"
+                                    variant="danger"
+                                    icon="trash"
+                                    wire:click="removeOpeningHour({{ $index }})"
+                                />
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <flux:button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        icon="plus"
+                        wire:click="addOpeningHour"
+                    >
+                        Adicionar Horário
+                    </flux:button>
+                </div>
 
                 <div class="flex items-center justify-end gap-4">
                     <flux:button variant="ghost" :href="route('stores.index')" wire:navigate>
