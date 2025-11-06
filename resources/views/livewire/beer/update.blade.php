@@ -135,7 +135,9 @@
                         rows="4"
                     />
                 </flux:field>
+                <flux:separator />
 
+                <livewire:components.image-uploader :model="$beer ?? null" />
                 <div class="flex items-center justify-end gap-4">
                     <flux:button variant="ghost" :href="route('beers.index')" wire:navigate>
                         Cancelar
@@ -146,9 +148,7 @@
                 </div>
             </form>
 
-            <flux:separator />
 
-            <livewire:components.image-uploader :model="$beer ?? null" />
         </x-section>
 
 
