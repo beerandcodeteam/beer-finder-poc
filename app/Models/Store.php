@@ -39,7 +39,7 @@ class Store extends Model
     {
         return $this->belongsToMany(Beer::class)
             ->using(BeerStore::class)
-            ->withPivot(['price', 'url', 'promo_label', 'deleted_at'])
+            ->withPivot(['price', 'url', 'promo_label'])
             ->withTimestamps();
     }
 

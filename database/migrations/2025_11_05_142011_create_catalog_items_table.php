@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description');
             $table->text('ingredients');
             $table->integer('price');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

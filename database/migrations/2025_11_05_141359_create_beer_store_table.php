@@ -17,8 +17,7 @@ return new class extends Migration
             $table->foreignId('store_id')->constrained()->cascadeOnDelete();
             $table->integer('price');
             $table->string('url');
-            $table->string('promo_label');
-            $table->softDeletes();
+            $table->string('promo_label')->nullable();
             $table->timestamps();
         });
     }

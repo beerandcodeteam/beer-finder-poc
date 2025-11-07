@@ -23,6 +23,6 @@ class BeerService
             $query->orderBy($sortBy, $sortDirection);
         }
 
-        return $query->paginate(1);
+        return $query->paginate(15);
     }
 }
