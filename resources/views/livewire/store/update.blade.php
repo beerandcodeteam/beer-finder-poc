@@ -122,6 +122,10 @@
 
                 <livewire:components.beer-selector :store="$store" />
 
+                <flux:separator/>
+
+                <livewire:components.catalog-item-manager :store="$store" />
+
                 <div class="flex items-center justify-end gap-4">
                     <flux:button variant="ghost" :href="route('stores.index')" wire:navigate>
                         Cancelar
