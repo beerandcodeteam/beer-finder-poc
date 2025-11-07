@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components;
 
+use App\Livewire\Forms\Store\BeerSelectorForm;
 use App\Models\Beer;
 use App\Models\Store;
 use Livewire\Component;
@@ -11,17 +12,11 @@ class BeerSelector extends Component
 {
     public ?Store $store = null;
 
+    public BeerSelectorForm $form;
+
     public array $selectedBeers = [];
 
     public array $availableBeers = [];
-
-    public int $selectedBeerId = 0;
-
-    public string $price = '';
-
-    public string $url = '';
-
-    public string $promo_label = '';
 
     /**
      * Mount the component.
@@ -29,6 +24,7 @@ class BeerSelector extends Component
     public function mount(?Store $store = null): void
     {
         $this->store = $store;
+        $this->form->setStore($store);
 
         $this->loadBeers();
     }
@@ -73,24 +69,15 @@ class BeerSelector extends Component
      */
     public function addBeer(): void
     {
-        if (! $this->store || ! $this->selectedBeerId) {
+        if (! $this->store || ! $this->form->selectedBeerId) {
             return;
         }
 
-        $this->validate([
-            'selectedBeerId' => ['required', 'exists:beers,id'],
-            'price' => ['required', 'integer', 'min:0'],
-            'url' => ['required', 'url', 'max:255'],
-            'promo_label' => ['required', 'string', 'max:255'],
-        ]);
+        $this->validate();
 
-        $this->store->beers()->attach($this->selectedBeerId, [
-            'price' => $this->price,
-            'url' => $this->url,
-            'promo_label' => $this->promo_label,
-        ]);
+        $this->form->attach();
 
-        $this->reset(['selectedBeerId', 'price', 'url', 'promo_label']);
+        $this->form->reset();
         $this->loadBeers();
 
         Toaster::success('Cerveja adicionada com sucesso!');

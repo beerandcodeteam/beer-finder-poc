@@ -48,7 +48,7 @@
 
                 <div class="space-y-4">
                     <flux:field>
-                        <flux:select wire:model.live="selectedBeerId" label="Selecione a Cerveja">
+                        <flux:select wire:model.live="form.selectedBeerId" label="Selecione a Cerveja">
                             <flux:select.option value="">Escolha uma cerveja</flux:select.option>
                             @foreach($availableBeers as $beer)
                                 <flux:select.option value="{{ $beer['id'] }}">{{ $beer['name'] }}</flux:select.option>
@@ -59,7 +59,7 @@
                     <div class="grid lg:grid-cols-2 gap-4">
                         <flux:field>
                             <flux:input
-                                wire:model="price"
+                                wire:model="form.price"
                                 label="Preço (em centavos)"
                                 type="number"
                                 min="0"
@@ -69,7 +69,7 @@
 
                         <flux:field>
                             <flux:input
-                                wire:model="promo_label"
+                                wire:model="form.promo_label"
                                 label="Etiqueta Promocional"
                                 type="text"
                                 placeholder="Ex: Promoção de Verão"
@@ -79,7 +79,7 @@
 
                     <flux:field>
                         <flux:input
-                            wire:model="url"
+                            wire:model="form.url"
                             label="URL do Produto"
                             type="url"
                             placeholder="https://loja.com/produto/cerveja"
@@ -91,7 +91,7 @@
                         variant="primary"
                         icon="plus"
                         wire:click="addBeer()"
-                        :disabled="!$selectedBeerId"
+                        :disabled="!$form->selectedBeerId"
                     >
                         Adicionar Cerveja
                     </flux:button>
