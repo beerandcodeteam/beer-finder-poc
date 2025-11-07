@@ -36,7 +36,7 @@ class ImageUploader extends Component
                 ->map(fn (Image $image) => [
                     'id' => $image->id,
                     'path' => $image->path,
-                    'url' => Storage::url($image->path),
+                    'url' => Storage::temporaryUrl($image->path, now()->addMinute()),
                     'is_cover' => $image->is_cover,
                 ])
                 ->toArray();
@@ -104,7 +104,7 @@ class ImageUploader extends Component
         $hasNoCover = $this->model->images()->where('is_cover', true)->doesntExist();
 
         foreach ($this->images as $index => $image) {
-            $path = $image->store($this->storagePath, 'public');
+            $path = $image->store($this->storagePath, 's3');
 
             $this->model->images()->create([
                 'path' => $path,
