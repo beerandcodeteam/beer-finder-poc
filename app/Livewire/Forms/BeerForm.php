@@ -73,9 +73,9 @@ class BeerForm extends Form
     /**
      * Create a new beer.
      */
-    public function store(): void
+    public function store(): Beer
     {
-        Beer::create($this->validate());
+        return Beer::create($this->validate());
     }
 
     /**

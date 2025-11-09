@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Beer;
 
+use App\Jobs\ProcessBeer;
 use App\Livewire\Forms\BeerForm;
 use App\Services\BeerService;
 use Livewire\Component;
@@ -22,7 +23,9 @@ class Create extends Component
     {
         try {
 
-            $this->form->store();
+            $beer = $this->form->store();
+
+            dispatch(new ProcessBeer(beer: $beer));
 
             return redirect(route('beers.index'))
                 ->success("{$this->form->name} Criada com sucesso!");
