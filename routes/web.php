@@ -30,7 +30,9 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 
-    Route::get('beers', \App\Livewire\Beer\Index::class)->name('beers.index');
+    Route::get('beers', \App\Livewire\Beer\Index::class)
+        ->middleware('can:create-beer')
+        ->name('beers.index');
     Route::get('beers/create', \App\Livewire\Beer\Create::class)
         ->middleware('can:create,App\Models\Beer')
         ->name('beers.create');

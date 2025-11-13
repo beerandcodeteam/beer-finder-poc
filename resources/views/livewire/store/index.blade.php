@@ -56,18 +56,22 @@
                             <x-table.cell>{{ $store->phone }}</x-table.cell>
                             <x-table.cell>{{ $store->user?->name ?? 'N/A' }}</x-table.cell>
                             <x-table.cell>
-                                <flux:button
-                                    :href="route('stores.update', $store->id)"
-                                    variant="ghost" size="sm" icon="pencil" class="cursor-pointer"
-                                    inset="top bottom"
-                                    wire:navigate
-                                ></flux:button>
-                                <flux:button
-                                    wire:click="remove({{ $store->id }})"
-                                    wire:confirm="Tem certeza que deseja remover esta loja?"
-                                    variant="ghost" size="sm" icon="trash" class="cursor-pointer"
-                                    inset="top bottom"
-                                ></flux:button>
+                                @can('update', $store)
+                                    <flux:button
+                                        :href="route('stores.update', $store->id)"
+                                        variant="ghost" size="sm" icon="pencil" class="cursor-pointer"
+                                        inset="top bottom"
+                                        wire:navigate
+                                    ></flux:button>
+                                @endcan
+                                @can('delete', $store)
+                                    <flux:button
+                                        wire:click="remove({{ $store->id }})"
+                                        wire:confirm="Tem certeza que deseja remover esta loja?"
+                                        variant="ghost" size="sm" icon="trash" class="cursor-pointer"
+                                        inset="top bottom"
+                                    ></flux:button>
+                                @endcan
                             </x-table.cell>
                         </x-table.row>
                     @endforeach

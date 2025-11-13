@@ -49,6 +49,8 @@ class Index extends Component
 
     public function remove(Store $store): void
     {
+        $this->authorize('delete', $store);
+
         $store->delete();
         Toaster::info("{$store->name} removida com sucesso!");
     }
@@ -56,7 +58,7 @@ class Index extends Component
     public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.store.index', [
-            'stores' => $this->storeService->getStores($this->filters, $this->sortBy, $this->sortDirection),
+            'stores' => $this->storeService->getStores($this->filters, $this->sortBy, $this->sortDirection, auth()->user()),
         ]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -56,5 +58,15 @@ class Store extends Model
     public function coverImage(): \Illuminate\Database\Eloquent\Relations\MorphOne
     {
         return $this->morphOne(Image::class, 'imageable')->where('is_cover', true);
+    }
+
+    #[Scope]
+    public function userScope(Builder $query): \Illuminate\Database\Eloquent\Builder
+    {
+        if (auth()->user()->is_admin) {
+            return $query;
+        }
+
+        return $query->where('user_id', auth()->id());
     }
 }

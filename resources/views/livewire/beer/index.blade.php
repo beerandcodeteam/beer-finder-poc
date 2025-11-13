@@ -14,6 +14,10 @@
             @endcan
         </div>
 
+        @can('create-beer')
+            aaaaa
+        @endcan
+
         <div class="grid lg:grid-cols-13 gap-4 mb-6 items-end">
             <flux:field class="col-span-3">
                 <flux:input label="Nome" placeholder="Busque pelo nome da cerveja" wire:model="filters.name"/>
