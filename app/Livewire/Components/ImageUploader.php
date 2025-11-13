@@ -104,7 +104,7 @@ class ImageUploader extends Component
         $hasNoCover = $this->model->images()->where('is_cover', true)->doesntExist();
 
         foreach ($this->images as $index => $image) {
-            $path = $image->store($this->storagePath, 's3');
+            $path = $image->store($this->storagePath);
 
             $this->model->images()->create([
                 'path' => $path,
