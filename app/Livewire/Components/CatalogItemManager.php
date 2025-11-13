@@ -19,15 +19,12 @@ class CatalogItemManager extends Component
 
     public ?int $editingItemId = null;
 
-
     /**
      * Mount the component.
      */
     public function mount(?Store $store = null): void
     {
         $this->store = $store;
-        $this->form->setStore($store);
-
         $this->loadCatalogItems();
     }
 
@@ -84,6 +81,8 @@ class CatalogItemManager extends Component
         if (! $this->store) {
             return;
         }
+
+        $this->form->setStore($this->store);
 
         $this->validate();
 

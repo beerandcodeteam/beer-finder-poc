@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Chat\Index as ChatIndex;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -7,10 +8,10 @@ use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
+
 Route::middleware(['auth'])->group(function () {
 
-    Route::view('/', 'dashboard')
-        ->name('dashboard');
+    Route::get('/', ChatIndex::class)->name('dashboard');
 
     Route::redirect('settings', 'settings/profile');
 

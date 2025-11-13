@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\BeerFinderService;
+use App\Services\EmbeddingService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
     }
 }

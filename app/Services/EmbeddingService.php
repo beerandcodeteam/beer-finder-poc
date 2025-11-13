@@ -12,7 +12,7 @@ class EmbeddingService
     public function generateEmbedding(string $text)
     {
         $response = Prism::embeddings()
-            ->using(Provider::OpenAI, 'text-embedding-3-small')
+            ->using(Provider::OpenAI, 'text-embedding-3-large')
             ->fromInput($text)
             ->asEmbeddings();
 

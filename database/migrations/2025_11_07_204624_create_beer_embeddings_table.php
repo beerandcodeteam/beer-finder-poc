@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('beer_embeddings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('beer_id')->constrained()->cascadeOnDelete();
-            $table->string('text');
+            $table->longText('text');
             $table->json('metadata');
             $table->vector('embedding');
             $table->timestamps();
