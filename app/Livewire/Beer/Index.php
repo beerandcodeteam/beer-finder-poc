@@ -51,6 +51,8 @@ class Index extends Component
 
     public function remove(Beer $beer)
     {
+        $this->authorize('delete', $beer);
+
         $beer->delete();
         Toaster::info("{$beer->name} removida com sucesso!");
     }

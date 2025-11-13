@@ -7,9 +7,11 @@
                 <flux:text class="mt-2 mb-6 text-base">Listagem de cervejas</flux:text>
             </div>
 
+            @can('create', \App\Models\Beer::class)
             <flux:button
                 href="{{ route('beers.create') }}"
                 icon="plus-circle">Criar nova cerveja</flux:button>
+            @endcan
         </div>
 
         <div class="grid lg:grid-cols-13 gap-4 mb-6 items-end">
@@ -116,14 +118,18 @@
                             <x-table.cell>{{ $beer['ph'] }}</x-table.cell>
                             <x-table.cell>{{ $beer['volume'] }}</x-table.cell>
                             <x-table.cell>
+                                @can('update', $beer)
                                 <flux:button
                                     href="{{ route('beers.update', $beer['id']) }}"
                                     variant="ghost" size="sm" icon="pencil" class="cursor-pointer"
                                              inset="top bottom"></flux:button>
+                                @endcan
+                                @can('delete', $beer)
                                 <flux:button
                                     wire:click="remove({{ $beer['id'] }})"
                                     variant="ghost" size="sm" icon="trash" class="cursor-pointer"
                                              inset="top bottom"></flux:button>
+                                @endcan
                             </x-table.cell>
                         </x-table.row>
                     @endforeach

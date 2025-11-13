@@ -21,6 +21,8 @@ class Create extends Component
 
     public function save()
     {
+        $this->authorize('create', \App\Models\Beer::class);
+
         try {
 
             $beer = $this->form->store();
